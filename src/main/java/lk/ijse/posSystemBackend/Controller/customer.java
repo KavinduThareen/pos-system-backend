@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -38,16 +39,19 @@ public class customer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
 
         if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"message\": \"Invalid content type\"}");
+            try (PrintWriter writer = resp.getWriter()) {
+                writer.write("{\"message\": \"Invalid content type\"}");
+            }
             return;
         }
 
-        try (var writer = resp.getWriter()) {
+        try (var reader = req.getReader(); var writer = resp.getWriter()) {
             Jsonb jsonb = JsonbBuilder.create();
-            CustomerDTO customer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+            CustomerDTO customer = jsonb.fromJson(reader, CustomerDTO.class);
 
             var ps = connection.prepareStatement(SAVE_CUS);
             ps.setString(1, customer.getId());
@@ -65,7 +69,9 @@ public class customer extends HttpServlet {
             }
         } catch (SQLException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("{\"message\": \"Database error\"}");
+            try (PrintWriter writer = resp.getWriter()) {
+                writer.write("{\"message\": \"Database error\"}");
+            }
             e.printStackTrace();
         }
     }
