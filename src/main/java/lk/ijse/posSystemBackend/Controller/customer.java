@@ -191,6 +191,38 @@ public class customer extends HttpServlet {
 
 
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        String cusId = req.getParameter("id"); // Assuming 'id' is the parameter name
+
+        if (cusId == null || cusId.isEmpty()) {
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Customer ID is required");
+            return;
+        }
+
+        try (var ps = connection.prepareStatement(DELETE_CUS)) {
+            ps.setString(1, cusId);
+            int result = ps.executeUpdate();
+
+            if (result > 0) {
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                resp.getWriter().write("{\"message\": \"Customer deleted successfully\"}");
+            } else {
+                sendErrorResponse(resp, HttpServletResponse.SC_NOT_FOUND, "Customer not found");
+            }
+        } catch (SQLException e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
 }
 
