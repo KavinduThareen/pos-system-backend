@@ -17,7 +17,7 @@ public class customerFilter extends HttpFilter {
         var origin = getServletContext().getInitParameter("origin");
         if (origin.contains(getServletContext().getInitParameter("origin"))) {
             res.setHeader("Access-Control-Allow-Origin", origin);
-            res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+            res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             res.setHeader("Access-Control-Expose-Headers", "Content-Type");
         }
