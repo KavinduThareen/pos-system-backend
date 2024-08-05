@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.ijse.posSystemBackend.dao.Impl.CustomerDAOImpl;
 import lk.ijse.posSystemBackend.dto.CustomerDTO;
 
 import javax.naming.InitialContext;
@@ -46,6 +47,49 @@ public class customer extends HttpServlet {
         }
     }
 
+
+    //save
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.setContentType("application/json");
+//        resp.setCharacterEncoding("UTF-8");
+//
+//        if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
+//            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            try (PrintWriter writer = resp.getWriter()) {
+//                writer.write("{\"message\": \"Invalid content type\"}");
+//            }
+//            return;
+//        }
+//
+//        try (var reader = req.getReader(); var writer = resp.getWriter()) {
+//            Jsonb jsonb = JsonbBuilder.create();
+//            CustomerDTO customer = jsonb.fromJson(reader, CustomerDTO.class);
+//
+//            var ps = connection.prepareStatement(SAVE_CUS);
+//            ps.setString(1, customer.getId());
+//            ps.setString(2, customer.getName());
+//            ps.setString(3, customer.getAddress());
+//            ps.setString(4, customer.getSalory());
+//
+//            int result = ps.executeUpdate();
+//            if (result > 0) {
+//                resp.setStatus(HttpServletResponse.SC_CREATED);
+//                writer.write("{\"message\": \"Customer saved successfully\"}");
+//            } else {
+//                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//                writer.write("{\"message\": \"Failed to save customer\"}");
+//            }
+//        } catch (SQLException e) {
+//            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            try (PrintWriter writer = resp.getWriter()) {
+//                writer.write("{\"message\": \"Database error\"}");
+//            }
+//            e.printStackTrace();
+//        }
+//    }
+
+
     //save
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,39 +103,23 @@ public class customer extends HttpServlet {
             }
             return;
         }
-
-        try (var reader = req.getReader(); var writer = resp.getWriter()) {
+        try (var writer = resp.getWriter()) {
             Jsonb jsonb = JsonbBuilder.create();
-            CustomerDTO customer = jsonb.fromJson(reader, CustomerDTO.class);
+            var customerDAOIMPL = new CustomerDAOImpl();
+            CustomerDTO customer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
 
-            var ps = connection.prepareStatement(SAVE_CUS);
-            ps.setString(1, customer.getId());
-            ps.setString(2, customer.getName());
-            ps.setString(3, customer.getAddress());
-            ps.setString(4, customer.getSalory());
-
-            int result = ps.executeUpdate();
-            if (result > 0) {
-                resp.setStatus(HttpServletResponse.SC_CREATED);
-                writer.write("{\"message\": \"Customer saved successfully\"}");
-            } else {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                writer.write("{\"message\": \"Failed to save customer\"}");
-            }
-        } catch (SQLException e) {
+            //Save data in the DB
+            writer.write(customerDAOIMPL.saveCustomer(customer, connection));
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+        } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            try (PrintWriter writer = resp.getWriter()) {
-                writer.write("{\"message\": \"Database error\"}");
-            }
             e.printStackTrace();
         }
+
     }
 
 
-
-
-
-//load table
+    //load table
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
@@ -123,7 +151,16 @@ public class customer extends HttpServlet {
     }
 
 
-//update
+
+
+
+
+
+
+
+
+
+//correct update
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -190,35 +227,140 @@ public class customer extends HttpServlet {
 
 
 
+    // layed update not work this
+//    @Override
+//    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.setContentType("application/json");
+//        resp.setCharacterEncoding("UTF-8");
+//
+//        if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
+//            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Invalid content type");
+//            return;
+//        }
+//
+//        try (var reader = req.getReader(); var writer = resp.getWriter()) {
+//            Jsonb jsonb = JsonbBuilder.create();
+//            CustomerDTO customer = jsonb.fromJson(reader, CustomerDTO.class);
+//
+//            if (customer.getId() == null) {
+//                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "ID is required for update");
+//                return;
+//            }
+//
+//            try (var writer = resp.getWriter()) {
+//                var studentDAOIMPL = new CustomerDAOImpl();
+//                var cusId = req.getParameter("studentId");
+//                Jsonb jsonb = JsonbBuilder.create();
+//
+//                CustomerDTO customer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+//                if (studentDAOIMPL.updateCustomer(cusId, customer, connection)) {
+//                    resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+//                } else {
+//                    writer.write("Update failed");
+//                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+
+
+
+//delete
+//    @Override
+//    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.setContentType("application/json");
+//        resp.setCharacterEncoding("UTF-8");
+//
+//        String cusId = req.getParameter("id"); // Assuming 'id' is the parameter name
+//
+//        if (cusId == null || cusId.isEmpty()) {
+//            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Customer ID is required");
+//            return;
+//        }
+//
+//        try (var ps = connection.prepareStatement(DELETE_CUS)) {
+//            ps.setString(1, cusId);
+//            int result = ps.executeUpdate();
+//
+//            if (result > 0) {
+//                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+//                resp.getWriter().write("{\"message\": \"Customer deleted successfully\"}");
+//            } else {
+//                sendErrorResponse(resp, HttpServletResponse.SC_NOT_FOUND, "Customer not found");
+//            }
+//        } catch (SQLException e) {
+//            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+//            e.printStackTrace();
+//        }
+//    }
+
+
+
+
+
+//    @Override
+//    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.setContentType("application/json");
+//        resp.setCharacterEncoding("UTF-8");
+//
+//        try (var writer = resp.getWriter()) {
+//            var cusId = req.getParameter("studentId");
+//            var customerDAOIMPL = new CustomerDAOImpl();
+//
+//
+//
+//
+//            if (cusId == null || cusId.isEmpty()) {
+//                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Customer ID is required");
+//                return;
+//            }
+//
+//            if(customerDAOIMPL.deleteCustomer(cusId,connection)){
+//
+//
+//                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+//                resp.getWriter().write("{\"message\": \"Customer deleted successfully\"}");
+//            }else {
+//                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+//                writer.write("Delete failed");
+//                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+
+
+
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
-        String cusId = req.getParameter("id"); // Assuming 'id' is the parameter name
+        try (PrintWriter writer = resp.getWriter()) {
+            String cusId = req.getParameter("cusId");
+            CustomerDAOImpl customerDAOIMPL = new CustomerDAOImpl();
 
-        if (cusId == null || cusId.isEmpty()) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Customer ID is required");
-            return;
-        }
-
-        try (var ps = connection.prepareStatement(DELETE_CUS)) {
-            ps.setString(1, cusId);
-            int result = ps.executeUpdate();
-
-            if (result > 0) {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                resp.getWriter().write("{\"message\": \"Customer deleted successfully\"}");
-            } else {
-                sendErrorResponse(resp, HttpServletResponse.SC_NOT_FOUND, "Customer not found");
+            if (cusId == null || cusId.isEmpty()) {
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "Customer ID is required");
+                return;
             }
-        } catch (SQLException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+
+            if (customerDAOIMPL.deleteCustomer(cusId, connection)) {
+                writer.write("{\"message\": \"Customer deleted successfully\"}");
+                resp.setStatus(HttpServletResponse.SC_OK);  // Changed from NO_CONTENT to OK
+            } else {
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+            }
+        } catch (Exception e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while deleting the customer.");
             e.printStackTrace();
         }
     }
-
 
 
 
