@@ -162,7 +162,31 @@ public class Item extends HttpServlet {
 
 
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
 
+        try (PrintWriter writer = resp.getWriter()) {
+            String code = req.getParameter("code");
+            ItemDAOImpl itemDAOImpl = new ItemDAOImpl();
+
+            if (code == null || code.isEmpty()) {
+                sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, "item code is required");
+                return;
+            }
+
+            if (itemDAOImpl.deleteItem(code, connection)) {
+                writer.write("{\"message\": \"item deleted successfully\"}");
+                resp.setStatus(HttpServletResponse.SC_OK);  // Changed from NO_CONTENT to OK
+            } else {
+                sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
+            }
+        } catch (Exception e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while deleting the item.");
+            e.printStackTrace();
+        }
+    }
 
 
 

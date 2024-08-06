@@ -12,7 +12,7 @@ public class ItemDAOImpl implements ItemDAO {
     private static final String SAVE_ITEM = "INSERT INTO items (code, name, qty, price) VALUES (?, ?, ?, ?)";
     public static String GET_ITEM = "SELECT * FROM items WHERE code=?";
     public static String UPDATE_ITEM = "UPDATE items SET name=?, qty=?, price=? WHERE code=?";
-    public static String DELETE_ITEM = "DELETE FROM customer WHERE code=?";
+    public static String DELETE_ITEM = "DELETE FROM items WHERE code=?";
 
 
 
@@ -45,6 +45,16 @@ public class ItemDAOImpl implements ItemDAO {
             ps.setString(2, itemDTO.getQty());
             ps.setString(3, itemDTO.getPrice());
             ps.setString(4, code);
+            return ps.executeUpdate() != 0;
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean deleteItem(String code, Connection connection) throws Exception {
+        try (var ps = connection.prepareStatement(DELETE_ITEM)) {
+            ps.setString(1, code);
             return ps.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
