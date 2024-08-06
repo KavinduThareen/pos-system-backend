@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.posSystemBackend.dao.Impl.CustomerDAOImpl;
 import lk.ijse.posSystemBackend.dto.CustomerDTO;
+import lk.ijse.posSystemBackend.util.Util;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,7 +17,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,13 @@ import java.util.List;
 import static javax.swing.UIManager.getString;
 
 @WebServlet(urlPatterns = "/customer")
-public class customer extends HttpServlet {
+public class Customer extends HttpServlet {
 
     private Connection connection;
-    private static final String SAVE_CUS = "INSERT INTO customer (id, name, address, salory) VALUES (?, ?, ?, ?)";
-    public static String GET_CUS = "SELECT * FROM customer WHERE id=?";
-    public static String UPDATE_CUS = "UPDATE customer SET name=?, address=?, salory=?, WHERE id=?";
-    public static String DELETE_CUS = "DELETE FROM customer WHERE id=?";
+//    private static final String SAVE_CUS = "INSERT INTO customer (id, name, address, salory) VALUES (?, ?, ?, ?)";
+//    public static String GET_CUS = "SELECT * FROM customer WHERE id=?";
+//    public static String UPDATE_CUS = "UPDATE customer SET name=?, address=?, salory=?, WHERE id=?";
+//    public static String DELETE_CUS = "DELETE FROM customer WHERE id=?";
 
     private static final String GET_ALL_CUS = "SELECT * FROM customer";
 
@@ -39,7 +39,7 @@ public class customer extends HttpServlet {
     public void init() throws ServletException {
         try {
             var ctx = new InitialContext();
-            DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/CusRegisPortal");
+            DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/RegisPortal");
             this.connection = pool.getConnection();
         } catch (SQLException | NamingException e) {
             e.printStackTrace();
@@ -90,7 +90,17 @@ public class customer extends HttpServlet {
 //    }
 
 
+
+
+
+
+
+
+
+
     //layed support save
+
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -107,6 +117,7 @@ public class customer extends HttpServlet {
             Jsonb jsonb = JsonbBuilder.create();
             var customerDAOIMPL = new CustomerDAOImpl();
             CustomerDTO customer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+            customer.setId(Util.generateId());
 
             //Save data in the DB
             writer.write(customerDAOIMPL.saveCustomer(customer, connection));
@@ -117,6 +128,11 @@ public class customer extends HttpServlet {
         }
 
     }
+
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 <Context>
-    <Resource name="jdbc/CusRegisPortal" auth="Container" type="javax.sql.DataSource"
+    <Resource name="jdbc/RegisPortal" auth="Container" type="javax.sql.DataSource"
               maxTotal="10" maxIdle="8" maxWaitMillis="-1"
               username="root" password="1234" driverClassName="com.mysql.cj.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/pos_System?createDatabaseIfNotExist=true"/>
