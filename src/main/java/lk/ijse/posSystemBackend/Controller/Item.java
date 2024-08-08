@@ -7,11 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lk.ijse.posSystemBackend.dao.Impl.CustomerDAOImpl;
 import lk.ijse.posSystemBackend.dao.Impl.ItemDAOImpl;
-import lk.ijse.posSystemBackend.dto.CustomerDTO;
 import lk.ijse.posSystemBackend.dto.ItemDTO;
-import lk.ijse.posSystemBackend.util.Util;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -61,7 +58,6 @@ public class Item extends HttpServlet {
             var itemDAOImpl = new ItemDAOImpl();
             ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
 
-//            itemDTO.setCode(Util.generateId());
 
             //Save data in the DB
             writer.write(itemDAOImpl.saveItem(itemDTO, connection));

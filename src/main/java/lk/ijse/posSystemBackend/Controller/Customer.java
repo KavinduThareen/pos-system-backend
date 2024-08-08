@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.posSystemBackend.dao.Impl.CustomerDAOImpl;
 import lk.ijse.posSystemBackend.dto.CustomerDTO;
-import lk.ijse.posSystemBackend.util.Util;
+
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.swing.UIManager.getString;
+
 
 @WebServlet(urlPatterns = "/customer")
 public class Customer extends HttpServlet {
@@ -117,7 +117,7 @@ public class Customer extends HttpServlet {
             Jsonb jsonb = JsonbBuilder.create();
             var customerDAOIMPL = new CustomerDAOImpl();
             CustomerDTO customer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-            customer.setId(Util.generateId());
+//            customer.setId(Util.generateId());
 
             //Save data in the DB
             writer.write(customerDAOIMPL.saveCustomer(customer, connection));
