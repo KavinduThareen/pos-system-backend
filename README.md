@@ -1,64 +1,73 @@
-POS System Backend
-This repository contains the backend implementation of a Point of Sale (POS) system. The project is developed using Java and Spring Boot, and it provides RESTful APIs for managing customers, items, and orders.
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=50&pause=1000&center=true&vCenter=true&width=835&height=70&lines=Java+EE++POS+System+Backend" alt="Typing SVG" /></a>
 
-Table of Contents
-Project Structure
-Installation
-Usage
-API Documentation
-Contributing
-License
-Project Structure
-The project is organized into the following directories:
+<p id="description">This is the backend of the Elite Real Estate POS system. A comprehensive platform developed using Java EE to manage real estate transactions efficiently. The backend provides RESTful API services to manage real estate properties customers appointments suppliers and payments.</p>
 
-bash
-Copy code
-.
-├── .idea                   # IntelliJ IDEA project settings
-├── .mvn/wrapper            # Maven Wrapper files
-├── src/main                # Source code directory
-│   ├── java                # Java source files
-│   └── resources           # Application resources
-├── .gitignore              # Git ignore file
-├── mvnw                    # Maven wrapper executable
-├── mvnw.cmd                # Maven wrapper for Windows
-├── pom.xml                 # Maven Project Object Model file
-└── README.md               # Project documentation (This file)
+  
+  
+<h2>🧐 Features</h2>
 
+Here're some of the project's best features:
 
-bash
-Copy code
-./mvnw clean install
-Run the application:
+*   Manage Customers: Create read update and delete customer information.
+*   Manage Properties: Create read update and delete property details.
+*   Schedule and Update Appointments: Schedule appointments and update their status.
+*   Process Payments: Record and update payment details.
+*   Transaction Management: Ensures data consistency with transactional operations.
 
-bash
-Copy code
-./mvnw spring-boot:run
-Usage
-After the project is set up and running, you can interact with the backend using the API endpoints. The base URL for the API is:
+<h2>😊 Getting Started</h2>
 
-arduino
-Copy code
-http://localhost:8080
-Example Endpoints
-GET /customers - Retrieve a list of customers.
-POST /customers - Add a new customer.
-PUT /customers/{id} - Update an existing customer.
-DELETE /customers/{id} - Delete a customer.
-API Documentation
-For detailed API documentation and examples, please refer to the Postman documentation:
+Prerequisites
+
+   * Java Development Kit (JDK) 11 or higher
+   * Apache Maven 3.6+
+   * An IDE like IntelliJ IDEA, Eclipse, or NetBeans
+   * MySQL Database
+
+<h2>😎 API Documentation </h2>
+
+Comprehensive API documentation is available via Postman.
+
+https://documenter.getpostman.com/view/35384990/2sA3s3GAYu
+
+This link provides access to all the API endpoints with detailed information about request parameters, responses, and error codes.
 
 
-You can use the Postman collection provided in the documentation to test the APIs. It includes sample requests for all available endpoints.
+<h2>🛠️ Installation Steps:</h2>
 
-Contributing
-If you would like to contribute to this project, please follow these steps:
+<p>1. Clone the repository:</p>
 
-Fork the repository.
-Create a new branch with your feature or bugfix.
-Commit your changes.
-Push the branch to your fork.
-Create a pull request to the main repository.
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+```
+https://github.com/sandundil2002/Java-EE_POS-Backend.git
+```
 
+<p>2. Configure the MySQL database using project resources db.sql file</p>
+
+<p>3. Update the context.xml file located in src/main/resources/META-INF/ with your database credentials.</p>
+
+<p>4. Build the project:</p>
+
+```
+mvn clean install
+```
+
+<p>5. Run the application: The application will be accessible at</p>
+
+```
+http://localhost:8080/Elite_Real_Estate_POS_Backend_war_exploded/
+```
+
+  
+  
+<h2>💻 Built with</h2>
+
+Technologies used in the project:
+
+*   Java EE: The core technology used for developing the backend.
+*   Sql: Mysql used for database operations.
+*   RESTful API: Provides endpoints for CRUD operations.
+*   Maven: For project management and dependency handling.
+*   Postman: For API testing and documentation.
+
+<h2>🛡️ License:</h2>
+
+This project is licensed under the MIT License. See the LICENSE file for details.
