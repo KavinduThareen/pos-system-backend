@@ -27,7 +27,7 @@ Prerequisites
 
 Comprehensive API documentation is available via Postman.
 
-https://documenter.getpostman.com/view/35384990/2sA3s3GAYu
+https://documenter.getpostman.com/view/35385412/2sA3s3GW2t
 
 This link provides access to all the API endpoints with detailed information about request parameters, responses, and error codes.
 
@@ -37,7 +37,7 @@ This link provides access to all the API endpoints with detailed information abo
 <p>1. Clone the repository:</p>
 
 ```
-https://github.com/sandundil2002/Java-EE_POS-Backend.git
+https://github.com/KavinduThareen/pos-system-backend
 ```
 
 <p>2. Configure the MySQL database using project resources db.sql file</p>
@@ -53,7 +53,7 @@ mvn clean install
 <p>5. Run the application: The application will be accessible at</p>
 
 ```
-http://localhost:8080/Elite_Real_Estate_POS_Backend_war_exploded/
+http://localhost:8080/pos_system_backend_war_exploded
 ```
 
   
