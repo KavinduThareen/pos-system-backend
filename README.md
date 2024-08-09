@@ -56,6 +56,14 @@ mvn clean install
 http://localhost:8080/pos_system_backend_war_exploded
 ```
 
+<p>6. Clone the frontend repository: </p>
+
+```
+https://github.com/KavinduThareen/POS-system-JS-JavaEE.git
+```
+
+
+
   
   
 <h2>💻 Built with</h2>
